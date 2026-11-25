@@ -14,7 +14,7 @@ const PRESETS: { name: string; cuts: [number, number] }[] = [
 const clamp = (v: number, a: number, b: number) => Math.min(b, Math.max(a, v));
 const round = (v: number) => Math.round(v * 100) / 100;
 
-export default function Mixer() {
+export default function Mixer({ eyebrow = "01 · התמהיל", full = false }: { eyebrow?: string; full?: boolean }) {
   const [loan, setLoan] = useState(1_200_000);
   const [years, setYears] = useState(25);
   // two cuts along the bar, measured from the right edge (RTL): fixed | prime | variable
@@ -83,7 +83,7 @@ export default function Mixer() {
       <div className="wrap">
         <div className="reveal grid gap-6 md:grid-cols-[1fr_auto] md:items-end">
           <div>
-            <p className="meta !text-[var(--on-ink-60)]">01 · התמהיל</p>
+            <p className="meta !text-[var(--on-ink-60)]">{eyebrow}</p>
             <h2 id="mixer-title" className="t2 mt-4 max-w-[16ch]">גררו את הקווים. תראו מה זה עושה להחזר.</h2>
           </div>
           <div className="flex flex-wrap gap-2" role="group" aria-label="תמהילים מוכנים">
@@ -203,9 +203,12 @@ export default function Mixer() {
               <p role="status" className={legal ? "text-[var(--on-ink-60)]" : "font-medium text-[var(--error-soft)]"}>
                 {verdict}
               </p>
-              <Link href="/questionnaire" className="btn">
-                בנו לי את התמהיל האמיתי <span className="arrow" aria-hidden>←</span>
-              </Link>
+              <div className="flex flex-wrap items-center gap-x-6 gap-y-3">
+                <Link href="/questionnaire/" className="btn">
+                  בנו לי את התמהיל האמיתי <span className="arrow" aria-hidden>←</span>
+                </Link>
+                {!full && <Link href="/calculator/" className="link font-medium">למחשבון המלא</Link>}
+              </div>
             </div>
           </div>
         </div>

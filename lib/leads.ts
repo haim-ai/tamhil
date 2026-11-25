@@ -9,6 +9,7 @@ export type Lead = {
   createdAt: string;
   status: LeadStatus;
   demo?: boolean;
+  source?: "questionnaire" | "contact";
   purpose: Purpose;
   price: number;
   equity: number;

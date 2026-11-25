@@ -1,11 +1,45 @@
 import Link from "next/link";
 import Photo from "./Photo";
+import { SERVICES } from "@/lib/content";
 
 const CTA = ({ children = "לשאלון ההתאמה" }: { children?: React.ReactNode }) => (
-  <Link href="/questionnaire" className="btn">
+  <Link href="/questionnaire/" className="btn">
     {children} <span className="arrow" aria-hidden>←</span>
   </Link>
 );
+
+/* 01 · services: four doors, one per situation */
+export function ServicesTeaser() {
+  return (
+    <section className="section !pt-[var(--s-group)]" aria-labelledby="svc-title">
+      <div className="wrap">
+        <div className="reveal flex flex-col justify-between gap-6 md:flex-row md:items-end">
+          <div>
+            <p className="meta">01 · שירותים</p>
+            <h2 id="svc-title" className="t2 mt-4 max-w-[16ch]">באיזה מצב אתם?</h2>
+          </div>
+          <Link href="/services/" className="link font-medium">לכל השירותים</Link>
+        </div>
+        <ul className="mt-[var(--s-group)] grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          {SERVICES.map((s) => (
+            <li key={s.slug} className="reveal">
+              <Link href={`/services/${s.slug}/`} className="group flex h-full flex-col overflow-hidden rounded-[24px] bg-paper transition hover:shadow-[0_24px_50px_-30px_rgb(20_32_27/0.45)]">
+                <span className="block overflow-hidden">
+                  <Photo name={s.image.name} alt="" w={s.image.w} h={s.image.h} sizes="(min-width: 1024px) 25vw, (min-width: 640px) 50vw, 100vw" className="aspect-[4/3] w-full object-cover transition-transform duration-700 group-hover:scale-[1.04]" />
+                </span>
+                <span className="flex flex-1 flex-col gap-2 p-5">
+                  <span className="t3 !font-bold">{s.label}</span>
+                  <span className="flex-1 text-[length:var(--t5)] text-[var(--ink-60)]">{s.short}</span>
+                  <span className="mt-2 text-[length:var(--t5)] font-medium text-accent">לעמוד השירות ←</span>
+                </span>
+              </Link>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+  );
+}
 
 /* 02 · how it works: the kitchen-table photo stays, the four steps scroll past it */
 const STEPS = [
@@ -22,9 +56,10 @@ export function How() {
       <div className="wrap grid gap-[var(--s-group)] md:grid-cols-[1fr_1.05fr] md:items-start">
         <div>
           <div className="reveal">
-            <p className="meta">02 · איך זה עובד</p>
+            <p className="meta">03 · איך זה עובד</p>
             <h2 id="how-title" className="t2 mt-4 max-w-[13ch]">ארבעה צעדים, ואתם לא הולכים לבנק.</h2>
             <p className="mt-6 max-w-sm text-[var(--ink-60)]">מהשאלון ועד החתימה עוברים בממוצע 24 יום. רוב העבודה קורית אצלי, לא אצלכם.</p>
+            <Link href="/process/" className="link mt-4 inline-block font-medium">לתהליך המלא ורשימת המסמכים</Link>
           </div>
           <ol className="mt-[var(--s-group)] flex flex-col">
             {STEPS.map((s, i) => (
@@ -62,7 +97,7 @@ export function Why() {
       <div className="wrap">
         <div className="relative grid md:grid-cols-[0.9fr_1.1fr] md:items-center">
           <div className="reveal relative z-10">
-            <p className="meta">03 · למה דרכי</p>
+            <p className="meta">04 · למה דרכי</p>
             <p className="num mt-6 font-bold leading-[0.85] tracking-[-0.05em] text-[length:clamp(5rem,2rem+13vw,15rem)]">
               <span dir="ltr">−0.62%</span>
             </p>
@@ -124,7 +159,7 @@ export function About() {
           </figcaption>
         </figure>
         <div className="reveal flex flex-col gap-[var(--s-group)]">
-          <p className="meta">04 · מי אני</p>
+          <p className="meta">05 · מי אני</p>
           <h2 id="about-title" className="sr-only">מיכל שגיא</h2>
           <blockquote className="t2 !font-medium !leading-[1.08]">
             ״רוב האנשים בוחרים משכנתא כמו שבוחרים מנה במסעדה זרה: מה שהמלצר המליץ. אני כאן כדי שתבינו את התפריט.״
@@ -141,6 +176,7 @@ export function About() {
               </div>
             ))}
           </dl>
+          <Link href="/about/" className="btn self-start">להכיר את מיכל <span className="arrow" aria-hidden>←</span></Link>
         </div>
       </div>
     </section>
@@ -158,7 +194,7 @@ export function Voices() {
   return (
     <section className="section bg-ink text-[var(--on-ink)]" aria-labelledby="voices-title">
       <div className="wrap">
-        <p className="meta reveal !text-[var(--on-ink-60)]">05 · לקוחות</p>
+        <p className="meta reveal !text-[var(--on-ink-60)]">06 · לקוחות</p>
         <h2 id="voices-title" className="t2 reveal mt-4 max-w-[15ch]">מה קורה אחרי שהתמהיל נסגר.</h2>
         <div className="mt-[var(--s-group)] grid gap-4 md:grid-cols-[1.3fr_1fr_1fr]">
           {VOICES.map((v, i) => (
@@ -189,8 +225,9 @@ export function Faq() {
     <section id="faq" className="section scroll-mt-16" aria-labelledby="faq-title">
       <div className="wrap grid gap-[var(--s-group)] md:grid-cols-[1fr_2fr]">
         <div className="reveal">
-          <p className="meta">06 · שאלות</p>
+          <p className="meta">07 · שאלות</p>
           <h2 id="faq-title" className="t2 mt-4">מה שואלים אותי הכי הרבה.</h2>
+          <Link href="/faq/" className="link mt-6 inline-block font-medium">לכל השאלות</Link>
         </div>
         <dl className="reveal grid gap-x-[var(--s-in)] gap-y-10 sm:grid-cols-2">
           {FAQ.map(([q, a]) => (
@@ -229,7 +266,7 @@ export function Final() {
 export function MobileBar() {
   return (
     <div className="fixed inset-x-0 bottom-0 z-40 border-t bg-[rgb(228_233_236/0.92)] p-3 backdrop-blur-md hair md:hidden">
-      <Link href="/questionnaire" className="btn w-full">
+      <Link href="/questionnaire/" className="btn w-full">
         לשאלון ההתאמה · 3 דקות <span className="arrow" aria-hidden>←</span>
       </Link>
     </div>

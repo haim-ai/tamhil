@@ -38,7 +38,7 @@ export default function Hero() {
             </h1>
             <p className="t4 max-w-[34ch]">אני בונה לכם שילוב מסלולים שמתאים להכנסה ולשקט שלכם, ונלחמת עליו מול הבנקים.</p>
             <div className="flex flex-wrap items-center gap-x-6 gap-y-3">
-              <Link href="/questionnaire" className="btn">
+              <Link href="/questionnaire/" className="btn">
                 לשאלון ההתאמה · 3 דקות <span className="arrow" aria-hidden>←</span>
               </Link>
               <a href="#mixer" className="link font-medium">או שחקו עם התמהיל בעצמכם</a>

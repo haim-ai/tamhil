@@ -121,3 +121,14 @@ textarea.field { padding-block: 0.9rem; min-height: 7rem; resize: vertical; }
 .seg-fixed { background: var(--ink); }
 .seg-prime { background: var(--accent); }
 .seg-variable { background: var(--accent-35); }
+
+/* questionnaire: one screen, sized by the viewport height too */
+.q-title { font-size: clamp(1.55rem, min(3.3vw, 4.8vh), 3.4rem); line-height: 1.02; letter-spacing: -0.03em; font-weight: 700; }
+.q .field { min-height: clamp(2.75rem, 5.6vh, 3.4rem); }
+.q .chip { min-height: clamp(2.5rem, 5vh, 2.9rem); padding-inline: 1rem; font-size: clamp(0.92rem, 0.85rem + 0.2vw, 1.05rem); }
+.q-body { scrollbar-width: thin; }
+@media (max-height: 700px) {
+  .q-body { gap: 0.6rem !important; padding-block: 0.4rem !important; }
+  .q .field { min-height: 2.6rem; }
+  .q .chip { min-height: 2.4rem; }
+}

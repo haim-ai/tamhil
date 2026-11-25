@@ -67,7 +67,15 @@ function Login({ onIn }: { onIn: () => void }) {
 function Detail({ lead, onClose, onStatus, onDelete }: { lead: Lead; onClose: () => void; onStatus: (s: LeadStatus) => void; onDelete: () => void }) {
   const c = calc(lead);
   const mix = suggestMix(c.ratio);
-  const rows: [string, [string, string][]][] = [
+  const contact = lead.source === "contact";
+  const rows: [string, [string, string][]][] = contact ? [
+    ["פנייה מטופס צור קשר", [
+      ["נושא", purposeOf(lead.purpose).label],
+      ["טלפון", lead.phone],
+      ["מייל", lead.email || "—"],
+      ["זמן לשיחה", lead.callTime || "—"],
+    ]],
+  ] : [
     ["1. הנכס", [
       ["מטרה", purposeOf(lead.purpose).label],
       [lead.purpose === "refinance" ? "שווי הנכס" : "מחיר הנכס", ils(lead.price)],
@@ -112,7 +120,7 @@ function Detail({ lead, onClose, onStatus, onDelete }: { lead: Lead; onClose: ()
         ))}
       </div>
 
-      <div className="grid grid-cols-2 gap-4 rounded-[18px] bg-ink p-5 text-[var(--on-ink)]">
+      {!contact && (<div className="grid grid-cols-2 gap-4 rounded-[18px] bg-ink p-5 text-[var(--on-ink)]">
         <div><p className="t5 text-[var(--on-ink-60)]">משכנתא נדרשת</p><p className="num t3 !text-[length:clamp(1.1rem,0.9rem+0.6vw,1.5rem)] !font-bold">{ils(c.loan)}</p></div>
         <div><p className="t5 text-[var(--on-ink-60)]">אחוז מימון</p><p className={`num t3 !font-bold ${c.ltv > purposeOf(lead.purpose).ltv ? "text-[var(--error-soft)]" : ""}`}>{pct(c.ltv)}</p></div>
         <div><p className="t5 text-[var(--on-ink-60)]">החזר משוער</p><p className="num t3 !text-[length:clamp(1.1rem,0.9rem+0.6vw,1.5rem)] !font-bold">{ils(c.pay)}</p></div>
@@ -125,7 +133,7 @@ function Detail({ lead, onClose, onStatus, onDelete }: { lead: Lead; onClose: ()
             {mix.variable > 0 && <span className="seg-variable" style={{ flexGrow: mix.variable }} />}
           </div>
         </div>
-      </div>
+      </div>)}
 
       {rows.map(([title, list]) => (
         <section key={title}>
@@ -176,7 +184,7 @@ function Dashboard({ onOut }: { onOut: () => void }) {
   }, [leads, q, filter]);
 
   const open = leads.find((l) => l.id === openId) ?? null;
-  const loans = leads.map((l) => calc(l).loan);
+  const loans = leads.filter((l) => l.source !== "contact").map((l) => calc(l).loan);
   const avg = loans.length ? loans.reduce((a, b) => a + b, 0) / loans.length : 0;
   const byPurpose = PURPOSES.map((p) => leads.filter((l) => l.purpose === p.id).length);
 
@@ -286,8 +294,8 @@ function Dashboard({ onOut }: { onOut: () => void }) {
                           {purposeOf(l.purpose).label}
                           <span className="block text-[var(--ink-60)]">{dateHe(l.createdAt)}</span>
                         </span>
-                        <span className="num text-[length:var(--t5)] font-medium">{ils(c.loan)}</span>
-                        <span className="col-span-2 md:col-span-1" title={`מימון ${pct(c.ltv)} מתוך ${pct(lim)}`}>
+                        <span className="num text-[length:var(--t5)] font-medium">{l.source === "contact" ? <span className="font-normal text-[var(--ink-60)]">פנייה מ"צור קשר"</span> : ils(c.loan)}</span>
+                        <span className={`col-span-2 md:col-span-1 ${l.source === "contact" ? "invisible" : ""}`} title={`מימון ${pct(c.ltv)} מתוך ${pct(lim)}`}>
                           <span className="flex justify-between text-[0.8rem] text-[var(--ink-60)]"><span>מימון</span><span className="num">{pct(c.ltv)}</span></span>
                           <span className="relative mt-1 block h-1.5 rounded-full bg-[var(--ink-12)]">
                             <span className="absolute inset-y-0 start-0 rounded-full" style={{ width: `${Math.min(100, c.ltv * 100)}%`, background: c.ltv > lim ? "var(--error)" : "var(--accent)" }} />
