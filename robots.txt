@@ -1,0 +1,5 @@
+User-Agent: *
+Allow: /
+Disallow: /tamhil/admin/
+
+Sitemap: https://haim-ai.github.io/tamhil/sitemap.xml
